@@ -1,0 +1,94 @@
+#https://devhints.io/bash
+#You can use bash programming to write functions :)
+
+#Update Initial values here
+INITIALS="KL"
+
+nspl () {
+	ng serve --port $1 --configuration=parkline-dev
+}
+
+ns () {
+	ng serve --port $1
+}
+
+bsns () {
+	ng serve --host 0.0.0.0 --port=$1
+}
+
+gpush () {
+    git add .
+    git commit -am $1
+    git push
+}
+
+gdev () {
+    git checkout develop
+    git fetch
+    git pull
+}
+
+gupdate () {
+    git fetch && git pull --rebase
+}
+
+prepareFeatureName () {
+    echo "$1" | sed "s/[:|'|\"|,|\ |\(|\)|-|/|@|&]/_/g" | sed -e "s/\"//g"
+}
+
+function newt {
+	echo ""
+	read -p "[INPUT REQUIRED 1/2]: What is the ticket number? =>" ticketNum
+	ticketNum=$(echo "$ticketNum" | tr [a-z] [A-Z] )
+	echo "==================================="
+	echo "[TICKET NUMBER]=>" $ticketNum
+	echo "==================================="
+	echo ""
+	read -p "[INPUT REQUIRED 2/2]: What is the ticket description? =>" ticketDescription
+	echo "==================================="
+	echo "[TICKET DESCRIPTION]=>" $ticketDescription
+	echo "==================================="
+	echo ""
+	
+	if [[ -z $ticketNum ]]; then
+		echo "FATAL ERROR: Ticket number cannot be empty!! Please try again."
+		echo ""
+	elif [[ -z $ticketDescription ]]; then
+		echo "FATAL ERROR: Ticket description cannot be empty!! Please try again."
+		echo ""
+	elif (( 1 < 2 )); then
+		startFeature "$ticketNum" "$ticketDescription"
+	fi
+}
+
+startFeature () {
+    ticketNumber=$1
+    date=$2
+    branchName=$(echo "release/"$ticketNumber"_"$INITIALS"_"$date)
+    gupdate && git checkout -b $branchName && git push -u
+}
+
+startFeature () {
+    ticketNumber=$1
+    featureName=$(echo "$2" | sed "s/[:|'|\"|,|\ |\(|\)|-|/|@|&]/_/g" | sed "s/\",//g")
+    branchName=$(echo "feature/"$ticketNumber"_"$INITIALS"_"$featureName)
+    gupdate && git checkout -b $branchName && git push -u
+}
+
+resumeFeature () {
+    git branch -a | grep -m 1 $1 | xargs git checkout
+}
+
+branchGrep () {
+    git branch -a | grep $1;
+}
+
+tagBranch () {
+    git tag -a -m "" $1
+    git push -v origin refs/tags/$1
+}
+
+deleteTag () {
+    git tag -d $1
+    git push origin :refs/tags/$1
+}
