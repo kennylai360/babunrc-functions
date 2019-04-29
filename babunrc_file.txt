@@ -82,18 +82,18 @@ prepareFeatureName () {
 }
 
 function newt {
-	echo ""
-	read -p "[INPUT REQUIRED 1/2]: What is the ticket number? =>" ticketNum
+	echo "[INPUT REQUIRED 1/2]: What is the ticket number?"
+	read ticketNum
 	ticketNum=$(echo "$ticketNum" | tr [a-z] [A-Z] )
 	echo "==================================="
 	echo "[TICKET NUMBER]=>" $ticketNum
 	echo "==================================="
-	echo ""
-	read -p "[INPUT REQUIRED 2/2]: What is the ticket description? =>" ticketDescription
+	echo "[INPUT REQUIRED 2/2]: What is the ticket description?"
+	read ticketDescription
 	echo "==================================="
 	echo "[TICKET DESCRIPTION]=>" $ticketDescription
 	echo "==================================="
-	echo ""
+	echo "[INFO] Generating branch and pushing it remotely..."
 	
 	if [[ -z $ticketNum ]]; then
 		echo "FATAL ERROR: Ticket number cannot be empty!! Please try again."
@@ -126,14 +126,4 @@ resumeFeature () {
 
 branchGrep () {
     git branch -a | grep $1;
-}
-
-tagBranch () {
-    git tag -a -m "" $1
-    git push -v origin refs/tags/$1
-}
-
-deleteTag () {
-    git tag -d $1
-    git push origin :refs/tags/$1
 }
