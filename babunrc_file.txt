@@ -36,7 +36,6 @@ export LC_ALL="en_US.UTF-8"
 # Project Aliases
 alias babunrc='nano ~/.babunrc'
 alias sshvm='ssh 192.168.200.40'
-alias pro='cd ~/../../cygdrive/c/grizzly'
 alias pro.pn='cd ~/../../cygdrive/c/grizzly/personalpages'
 alias pro.pn2='cd ~/../../cygdrive/c/grizzly/account-pages'
 alias pro.pj='cd ~/../../cygdrive/c/grizzly/project-kenny'
@@ -79,6 +78,35 @@ gupdate () {
 
 prepareFeatureName () {
     echo "$1" | sed "s/[:|'|\"|,|\ |\(|\)|-|/|@|&]/_/g" | sed -e "s/\"//g"
+}
+
+function qw {
+	echo ""
+	echo "Projects"
+	echo "======================"
+	echo "[1] Account_Pages V1"
+	echo "[2] Account_Pages V2"
+	echo "[3] Insight"
+	echo "[4] Project Kenny"
+	echo "[5] Go to Folder"
+	echo "======================"
+	echo "[INPUT REQUIRED] Please select a number corresponding to the project u wanna browse:"
+	read projectOption
+	
+	case $projectOption in
+    1 )
+        pro.pn ;;
+    2 )
+        pro.pn2 ;;
+	3 )
+        pro.insight ;;
+	4) 
+		pro.pj ;;
+	5 ) 
+		pro
+		ls ;;
+	*) echo "invalid option";;
+esac
 }
 
 function newt {
